@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Primary Color Shades */
+  --color-primary-50: #fff0ec;  
+  --color-primary-100: #ffe0d8;
+  --color-primary-200: #ffc2b3;
+  --color-primary-300: #ffa38f;
+  --color-primary-400: #ff856b;
+  --color-primary-500: #ff8559;
+  --color-primary-600: #e67850;
+  --color-primary-700: #cc6c48;
+  --color-primary-800: #b36040;
+  --color-primary-900: #995438;
+  
+  --color-secondary: #3b82f6;
+  --color-accent: #10b981;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-nunito: "Nunito", Helvetica, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
