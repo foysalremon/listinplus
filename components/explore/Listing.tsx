@@ -1,7 +1,8 @@
-import { type FC, Suspense, useState } from "react";
+import { type FC, useState } from "react";
 import { useListings } from '@/hooks/useListings';
 import { FiGrid, FiList } from "react-icons/fi";
 import clsx from "clsx";
+import ListingCard from "./ListingCard";
 
 type ListingProps = {
     className: string;
@@ -15,7 +16,7 @@ const Listing: FC<ListingProps> = ({ className }) => {
         <div className={className}>
             <div className="flex items-center justify-between mb-8">
                 <h3 className="text-xl text-gray-500">
-                    {isLoading ? 'Listing loading for given query' : isError ? 'Failed to load listings' : !listings || listings.length === 0 ? 'No listings found for given query' : `${listings.length} listing for given query`}
+                    {isLoading ? 'Listing loading for given query' : isError ? JSON.stringify(isError) : !listings || listings.length === 0 ? 'No listings found for given query' : `${listings.length} listing for given query`}
                 </h3>
                 <div className={clsx('flex gap-1 invisible', { 'visible': isLoading || (listings && listings.length) })}>
                     <button
@@ -35,17 +36,14 @@ const Listing: FC<ListingProps> = ({ className }) => {
                 </div>
             </div>
             {listings && listings.length > 0 &&
-                listings.map(listing => (
-                    <Suspense key={listing.id} fallback={<div>Loading...</div>}>
-                        <div className="border rounded-lg p-4">
-                            <h3
-                                className="font-bold"
-                                dangerouslySetInnerHTML={{ __html: listing.title.rendered }}
-                            />
-                            {/* ... display other listing info ... */}
-                        </div>
-                    </Suspense>
-                ))
+                <div className={clsx('flex flex-wrap items-stretch -mx-3', {
+                    'flex-row': view == 'grid',
+                    'flex-col': view == 'list'
+                })}>
+                    {
+                        listings.map(listing => <ListingCard key={`listing-${listing.id}`} listing={listing} />)
+                    }
+                </div>
             }
         </div>
     );
