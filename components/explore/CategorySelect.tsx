@@ -1,6 +1,6 @@
 "use client";
 import { useCategories, type Category } from "@/hooks/useCategories";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import { FiList } from "react-icons/fi";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -12,8 +12,10 @@ const CategorySelect = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
 
+    const [selectedCategory, setSelectedCategory] = useState({ name: "All Category", slug: '', id: 0 });
     const [categoryInput, setCategoryInput] = useState("");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (!categories) return;
@@ -30,6 +32,12 @@ const CategorySelect = () => {
         }
     }, [categories, searchParams]);
 
+    useEffect(() => {
+        if (isDropdownOpen && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [isDropdownOpen]);
+
     const filteredCategories = useMemo(() => {
         if (!categories) return [];
         if (!categoryInput) return categories;
@@ -40,7 +48,7 @@ const CategorySelect = () => {
     }, [categories, categoryInput]);
 
     const handleCategorySelect = (category: Category) => {
-        setCategoryInput(decodeHtml(category.name));
+        setSelectedCategory(category);
         setIsDropdownOpen(false);
 
         const params = new URLSearchParams(window.location.search);
@@ -54,25 +62,42 @@ const CategorySelect = () => {
     };
 
     return (
-        <div className="relative group w-full min-w-40">
+        <div
+            className="relative group w-full min-w-40"
+        >
             <div className="text-gray-500 group-focus-within:text-primary-500 absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none transition">
                 <FiList />
             </div>
-            <input
-                type="text"
-                name="categoryInput"
-                className="h-full ps-9 pe-4 py-2 w-full text-sm text-gray-500 placeholder:text-gray-500 rounded-md bg-gray-100 border-1 border-gray-300 transition focus:border-primary-500 focus:outline-none focus:bg-primary-50"
-                placeholder="All Categories"
-                value={categoryInput}
-                onChange={(e) => setCategoryInput(e.target.value)}
-                onFocus={() => setIsDropdownOpen(true)}
-                onBlur={() => {
-                    setTimeout(() => {
-                        setIsDropdownOpen(false);
-                    }, 150);
-                }}
-                autoComplete="off"
-            />
+            {isDropdownOpen ? (
+                <input
+                    ref={inputRef}
+                    type="text"
+                    name="categoryInput"
+                    className="h-full ps-9 pe-4 py-2 w-full text-sm text-gray-500 placeholder:text-gray-500 rounded-md bg-gray-100 border-1 border-gray-300 transition focus:border-primary-500 focus:outline-none focus:bg-primary-50"
+                    placeholder=""
+                    value={categoryInput}
+                    onChange={(e) => setCategoryInput(e.target.value)}
+                    autoComplete="off"
+                    onBlur={() => {
+                        setTimeout(() => {
+                            setIsDropdownOpen(false);
+                        }, 150);
+                    }}
+                />
+            ) : (
+                <button
+                    type="button"
+                    className="cursor-pointer px-9 py-2 w-full text-sm text-left text-gray-500 rounded-md bg-gray-100 border-1 border-gray-300 transition focus:border-primary-500 focus:outline-none focus:bg-primary-50"
+                    onClick={() => {
+                        setIsDropdownOpen(true);
+                        setCategoryInput('');
+                    }}
+                    aria-haspopup="listbox"
+                    aria-expanded={isDropdownOpen}
+                >
+                    <span className="text-nowrap truncate" dangerouslySetInnerHTML={{ __html: selectedCategory.name }}></span>
+                </button>
+            )}
             <div
                 className={clsx(
                     "absolute top-full left-0 right-0 z-10 pt-1 transition-all duration-300 ease-in-out",
@@ -103,7 +128,7 @@ const CategorySelect = () => {
                         <>
                             <li
                                 onClick={() =>
-                                    handleCategorySelect({ name: "", slug: "", id: 0 })
+                                    handleCategorySelect({ name: "All Category", slug: "", id: 0 })
                                 }
                                 className={clsx(
                                     "px-5 text-sm/8 text-gray-500 hover:text-primary-500 cursor-pointer whitespace-nowrap truncate border-b border-gray-100 text-nowrap truncate"
