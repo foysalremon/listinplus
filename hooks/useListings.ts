@@ -57,7 +57,7 @@ export function useListings() {
   }
   
   if (regionSlug) {
-    params.append('regions', regionSlug);
+    params.append('region', regionSlug);
   }
 
   if(category) {
