@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import { FiList } from "react-icons/fi";
 import { useRouter, useSearchParams } from "next/navigation";
-import { decodeHtml } from "@/utils/helper";
 import { TextLineSkeleton } from "../ui/Skeleton";
 
 const CategorySelect = () => {
@@ -27,7 +26,7 @@ const CategorySelect = () => {
                 (r) => r.slug === categorySlugParam
             );
             if (foundCategory) {
-                setCategoryInput(decodeHtml(foundCategory.name));
+                setSelectedCategory(foundCategory);
             }
         }
     }, [categories, searchParams]);
