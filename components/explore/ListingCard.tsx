@@ -11,9 +11,10 @@ import clsx from "clsx";
 type ListingCardProps = {
     listing: Listing;
     view: string;
+    index: number
 };
 
-const ListingCard: FC<ListingCardProps> = ({ listing, view }) => {
+const ListingCard: FC<ListingCardProps> = ({ listing, view, index }) => {
     const thumb = listing._embedded?.['wp:featuredmedia']?.[0]?.source_url;
     const logo = listing.cmb2?.listinger_listing_metabox?.__listinger__company_logo;
     const category = listing._embedded?.['wp:term']?.find(term => term[0].taxonomy == 'categorie')?.[0];
@@ -31,6 +32,7 @@ const ListingCard: FC<ListingCardProps> = ({ listing, view }) => {
                                     alt={listing.title.rendered}
                                     fill
                                     style={{ objectFit: 'cover' }}
+                                    priority={index < 4}
                                     //TOTO: Responsive optimization, handle no image
                                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 348vw"
                                 />

@@ -3,6 +3,7 @@ import { useListings } from "@/hooks/useListings";
 import { FiGrid, FiList } from "react-icons/fi";
 import clsx from "clsx";
 import ListingCard from "./ListingCard";
+import { ListingListSkeleton } from "../ui/Skeleton";
 
 type ListingProps = {
     className: string;
@@ -56,17 +57,17 @@ const Listing: FC<ListingProps> = ({ className }) => {
                 </div>
             </div>
             {isLoading
-                ? "Loading"
-                : listings &&
-                listings.length > 0 && (
+                ?
+                <ListingListSkeleton view={view} />
+                : listings && listings.length > 0 && (
                     <div
                         className={clsx("flex flex-wrap items-stretch -mx-3", {
                             "flex-row": view == "grid",
                             "flex-col": view == "list",
                         })}
                     >
-                        {listings.map((listing) => (
-                            <ListingCard key={`listing-${listing.id}`} listing={listing} view={view} />
+                        {listings.map((listing, index) => (
+                            <ListingCard key={`listing-${listing.id}`} listing={listing} view={view} index={index} />
                         ))}
                     </div>
                 )}
