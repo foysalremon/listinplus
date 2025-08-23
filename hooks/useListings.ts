@@ -45,25 +45,9 @@ const fetcher = (url: string) => axios.get<Listing[]>(url).then(res => res.data)
 
 export function useListings() {
   const searchParams = useSearchParams();
-  const params = new URLSearchParams();
+  const params = new URLSearchParams(searchParams.toString());
+  
   params.append('_embed', 'true');
-  
-  const searchTerm = searchParams.get('q');
-  const regionSlug = searchParams.get('region');
-  const category = searchParams.get('category');
-  
-  if (searchTerm) {
-    params.append('search', searchTerm);
-  }
-  
-  if (regionSlug) {
-    params.append('region', regionSlug);
-  }
-
-  if(category) {
-    params.append('category', category);
-  }
-  
   params.append('per_page', '12');
 
   const apiKey = `${process.env.NEXT_PUBLIC_BACKEND_API_ROOT}listing?${params.toString()}`;

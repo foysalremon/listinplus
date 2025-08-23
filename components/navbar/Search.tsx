@@ -21,11 +21,13 @@ const Search = () => {
     useEffect(() => {
         if (!regions) return;
 
-        const qParam = searchParams.get('q');
+        const qParam = searchParams.get('search');
         const regionSlugParam = searchParams.get('region');
 
         if (qParam) {
             setSearchTerm(qParam);
+        } else {
+            setSearchTerm('');
         }
 
         if (regionSlugParam) {
@@ -61,7 +63,7 @@ const Search = () => {
         e.preventDefault();
         const params = new URLSearchParams();
         if (searchTerm) {
-            params.set('q', searchTerm);
+            params.set('search', searchTerm);
         }
 
         if (selectedRegion && selectedRegion.slug) {

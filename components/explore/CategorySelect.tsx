@@ -57,12 +57,14 @@ const CategorySelect = () => {
             params.delete("category");
         }
 
-        router.push(`/explore?${params.toString()}`);
+        const queryString = params.toString();
+        const url = queryString ? `/explore?${queryString}` : '/explore';
+        router.push(url, { scroll: false });
     };
 
     return (
         <div
-            className="relative group w-full min-w-40"
+            className="relative group flex-1 min-w-40"
         >
             <div className="text-gray-500 group-focus-within:text-primary-500 absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none transition">
                 <FiList />

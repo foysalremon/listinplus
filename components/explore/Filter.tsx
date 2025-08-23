@@ -41,9 +41,9 @@ const SWITCH_OPTIONS = [
 const Filter: FC<FilterProps> = ({ className }) => {
     return (
         <div className={className}>
-            <div className="flex flex-row gap-2">
-                <CategorySelect />
+            <div className="flex flex-wrap gap-2">
                 <StyledSwitch name="best_match" label="Best Match" icon={FiShuffle} />
+                <CategorySelect />
                 <PriceSelect />
                 <StyledSwitch name="near_me" label="Near Me" icon={FiMapPin} />
                 <ResetButton />

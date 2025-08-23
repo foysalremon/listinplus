@@ -28,7 +28,7 @@ const StyledSwitch: FC<SwitchProps> = ({ name, label, icon: Icon }) => {
     };
 
     return (
-        <label className="relative w-full cursor-pointer">
+        <label className="relative flex-1 min-w-0 cursor-pointer">
             <input
                 id={`opt-${name}`}
                 name={name}
