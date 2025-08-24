@@ -1,6 +1,7 @@
 'use client';
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { FiMapPin } from "react-icons/fi";
 
 const NearMe = () => {
@@ -9,7 +10,6 @@ const NearMe = () => {
 
     // State to manage user location
     const [isLocating, setIsLocating] = useState(false);
-    const [locationError, setLocationError] = useState('');
     const [radius, setRadius] = useState(searchParams.get('radius') || '5');
 
     // Determine if the filter is active based on URL params
@@ -27,9 +27,9 @@ const NearMe = () => {
             router.push(url, { scroll: false });
         } else {
             setIsLocating(true);
-            setLocationError('');
             navigator.geolocation.getCurrentPosition(
                 (position) => {
+                    toast.success('Location fetched successfully');
                     params.set('lat', position.coords.latitude.toString());
                     params.set('lon', position.coords.longitude.toString());
                     params.set('radius', radius);
@@ -38,7 +38,7 @@ const NearMe = () => {
                     setIsLocating(false);
                 },
                 (error) => {
-                    setLocationError(error.message.replaceAll('User', 'You'));
+                    toast.error(error.message.replaceAll('User', 'You'));
                     setIsLocating(false);
                 }
             );
@@ -86,7 +86,6 @@ const NearMe = () => {
                     </div>
                 )}
             </label>
-            {locationError && <p className="absolute text-red-500 text-xs">{locationError}</p>}
         </div>
     )
 }
