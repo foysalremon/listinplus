@@ -24,7 +24,9 @@ const StyledSwitch: FC<SwitchProps> = ({ name, label, icon: Icon }) => {
             params.delete(name);
         }
 
-        router.push(`/explore?${params.toString()}`, { scroll: false });
+        const queryString = params.toString();
+        const url = queryString ? `/explore?${queryString}` : '/explore';
+        router.push(url, { scroll: false });
     };
 
     return (

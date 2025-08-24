@@ -3,8 +3,9 @@ import CategorySelect from "./CategorySelect";
 import PriceSelect from "./PriceSelect";
 import Switch from "./Switch";
 import StyledSwitch from "./StyledSwitch";
-import { FiMapPin, FiShuffle } from "react-icons/fi";
+import { FiShuffle } from "react-icons/fi";
 import ResetButton from "./ResetButton";
+import NearMe from "./NearMe";
 
 type FilterProps = {
     className: string;
@@ -42,10 +43,10 @@ const Filter: FC<FilterProps> = ({ className }) => {
     return (
         <div className={className}>
             <div className="flex flex-wrap gap-2">
-                <StyledSwitch name="best_match" label="Best Match" icon={FiShuffle} />
                 <CategorySelect />
+                <StyledSwitch name="best_rated" label="Best Rated" icon={FiShuffle} />
                 <PriceSelect />
-                <StyledSwitch name="near_me" label="Near Me" icon={FiMapPin} />
+                <NearMe />
                 <ResetButton />
             </div>
             <div className="flex flex-wrap mt-6">

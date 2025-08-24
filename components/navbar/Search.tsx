@@ -35,6 +35,8 @@ const Search = () => {
             if (foundRegion) {
                 setSelectedRegion(foundRegion);
             }
+        } else {
+            setSelectedRegion({ name: 'Any location', slug: '', id: 0 });
         }
     }, [regions, searchParams]);
 
